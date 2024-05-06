@@ -5,6 +5,7 @@ go 1.22.2
 require (
 	github.com/aliyun/aliyun-oss-go-sdk v3.0.2+incompatible
 	github.com/araddon/dateparse v0.0.0-20210429162001-6b43995a97de
+	github.com/bwmarrin/snowflake v0.3.0
 	github.com/gin-gonic/gin v1.9.1
 	github.com/go-playground/locales v0.14.1
 	github.com/go-playground/universal-translator v0.18.1
@@ -31,6 +32,7 @@ require (
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.3 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
+	github.com/go-resty/resty/v2 v2.12.0 // indirect
 	github.com/go-sql-driver/mysql v1.8.1 // indirect
 	github.com/goccy/go-json v0.10.2 // indirect
 	github.com/google/uuid v1.6.0 // indirect

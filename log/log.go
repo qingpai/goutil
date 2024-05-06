@@ -111,7 +111,7 @@ func _initFileLogger(logLevel *slog.LevelVar, logFile string) *slog.Logger {
 	}
 
 	lumberJackLogger = lumberjack.Logger{
-		Filename:   "logs/log.log",
+		Filename:   logFile,
 		MaxSize:    5,
 		MaxBackups: 0,
 		MaxAge:     0,
