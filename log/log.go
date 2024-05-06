@@ -76,7 +76,7 @@ func Errorf(msg string, args ...any) {
 var debugLogger *slog.Logger
 var fileLogger *slog.Logger
 
-func Init(level string) {
+func Init(level string, file string) {
 	var logLevel slog.LevelVar
 	switch level {
 	case "debug":
@@ -90,7 +90,7 @@ func Init(level string) {
 	}
 
 	debugLogger = _initDebugLogger(&logLevel)
-	fileLogger = _initFileLogger(&logLevel)
+	fileLogger = _initFileLogger(&logLevel, file)
 }
 
 func _initDebugLogger(logLevel *slog.LevelVar) *slog.Logger {
@@ -103,7 +103,7 @@ func _initDebugLogger(logLevel *slog.LevelVar) *slog.Logger {
 	return slog.New(slog.NewTextHandler(os.Stderr, &opts))
 }
 
-func _initFileLogger(logLevel *slog.LevelVar) *slog.Logger {
+func _initFileLogger(logLevel *slog.LevelVar, logFile string) *slog.Logger {
 	opts := slog.HandlerOptions{
 		AddSource:   true,
 		Level:       logLevel,

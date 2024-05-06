@@ -68,3 +68,12 @@ func ParseToken(token string, jwtSecret []byte) (ApiClaims, error) {
 
 	return ApiClaims{}, err
 }
+
+// GetServerToken 获取服务端token
+func GetServerToken(secret string, subject string, serverId int64) string {
+	if token, err := GenerateUserToken([]byte(secret), subject, 0, serverId, 1, 1); err == nil {
+		return token
+	}
+
+	return ""
+}
