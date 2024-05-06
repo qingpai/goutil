@@ -13,21 +13,21 @@ import (
 )
 
 var (
-	_serverHost      string
 	_storageType     string
 	_endpoint        string
 	_accessKeyID     string
 	_secretAccessKey string
 	_bucketName      string
+	_prefix          string
 )
 
-func Init(serverHost string, storageType string, endpoint string, accessKeyID string, secretAccessKey string, bucketName string) {
-	_serverHost = serverHost
+func Init(storageType string, endpoint string, accessKeyID string, secretAccessKey string, bucketName string, prefix string) {
 	_storageType = storageType
 	_endpoint = endpoint
 	_accessKeyID = accessKeyID
 	_secretAccessKey = secretAccessKey
 	_bucketName = bucketName
+	_prefix = prefix
 }
 
 type Provider interface {
@@ -53,6 +53,10 @@ func PutObject(key string, fileHeader *multipart.FileHeader) (gin.H, error) {
 		provider = NewMinio(_endpoint, _accessKeyID, _secretAccessKey, _bucketName)
 	default:
 		return nil, errors.New("invalid storage type")
+	}
+
+	if _prefix != "" {
+		key = fmt.Sprintf("%s/%s", _prefix, key)
 	}
 
 	uploadInfo, err := provider.PutObject(key, fileHeader)
@@ -98,7 +102,7 @@ func PresignedGet(key string, duration time.Duration) (string, error) {
 		return "", err
 	}
 
-	return fmt.Sprintf("%s/storage%s?%s", _serverHost, urlResp.Path, urlResp.RawQuery), nil
+	return fmt.Sprintf("storage%s?%s", urlResp.Path, urlResp.RawQuery), nil
 }
 
 // BatchPresignedGet 批量获取签名后的文件url
@@ -125,7 +129,7 @@ func BatchPresignedGet(key string, duration time.Duration) (map[string]gin.H, er
 		if err != nil {
 			return nil, err
 		}
-		urlString := fmt.Sprintf("%s/storage%s?%s", _serverHost, signedUrl.Path, signedUrl.RawQuery)
+		urlString := fmt.Sprintf("storage%s?%s", signedUrl.Path, signedUrl.RawQuery)
 		urls[key] = gin.H{"url": urlString, "expireAt": time.Now().Add(duration)}
 	}
 
