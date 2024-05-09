@@ -2,6 +2,7 @@ package util
 
 import (
 	"code.qingpai365.com/erp/goutil/localtime"
+	"golang.org/x/exp/constraints"
 	"time"
 )
 
@@ -30,4 +31,11 @@ func CalcAge(birthday *localtime.LocalDate) int64 {
 	}
 
 	return int64(age)
+}
+
+func Abs[T constraints.Integer](x T) T {
+	if x < 0 {
+		return -x
+	}
+	return x
 }
