@@ -13,15 +13,21 @@ import (
 )
 
 var (
-	_storageType     string
+	//代理前缀，会在生成的url前加上这个前缀
+	_proxyPrefix string
+	//存储类型，目前支持aliyunoss和minio
+	_storageType string
+
 	_endpoint        string
 	_accessKeyID     string
 	_secretAccessKey string
 	_bucketName      string
-	_prefix          string
+	//url prefix
+	_prefix string
 )
 
-func Init(storageType string, endpoint string, accessKeyID string, secretAccessKey string, bucketName string, prefix string) {
+func Init(proxyPrefix string, storageType string, endpoint string, accessKeyID string, secretAccessKey string, bucketName string, prefix string) {
+	_proxyPrefix = proxyPrefix
 	_storageType = storageType
 	_endpoint = endpoint
 	_accessKeyID = accessKeyID
@@ -102,7 +108,12 @@ func PresignedGet(key string, duration time.Duration) (string, error) {
 		return "", err
 	}
 
-	return fmt.Sprintf("storage%s?%s", urlResp.Path, urlResp.RawQuery), nil
+	targetUrl := ""
+	if _proxyPrefix != "" {
+		targetUrl = _proxyPrefix + "/"
+	}
+
+	return fmt.Sprintf("%s%s?%s", targetUrl, urlResp.Path, urlResp.RawQuery), nil
 }
 
 // BatchPresignedGet 批量获取签名后的文件url
@@ -129,7 +140,12 @@ func BatchPresignedGet(key string, duration time.Duration) (map[string]gin.H, er
 		if err != nil {
 			return nil, err
 		}
-		urlString := fmt.Sprintf("storage%s?%s", signedUrl.Path, signedUrl.RawQuery)
+
+		targetUrl := ""
+		if _proxyPrefix != "" {
+			targetUrl = _proxyPrefix + "/"
+		}
+		urlString := fmt.Sprintf("%s%s?%s", targetUrl, signedUrl.Path, signedUrl.RawQuery)
 		urls[key] = gin.H{"url": urlString, "expireAt": time.Now().Add(duration)}
 	}
 
