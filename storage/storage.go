@@ -108,12 +108,7 @@ func PresignedGet(key string, duration time.Duration) (string, error) {
 		return "", err
 	}
 
-	targetUrl := ""
-	if _proxyPrefix != "" {
-		targetUrl = _proxyPrefix + "/"
-	}
-
-	return fmt.Sprintf("%s%s?%s", targetUrl, urlResp.Path, urlResp.RawQuery), nil
+	return fmt.Sprintf("%s%s?%s", _proxyPrefix, urlResp.Path, urlResp.RawQuery), nil
 }
 
 // BatchPresignedGet 批量获取签名后的文件url
@@ -141,11 +136,7 @@ func BatchPresignedGet(key string, duration time.Duration) (map[string]gin.H, er
 			return nil, err
 		}
 
-		targetUrl := ""
-		if _proxyPrefix != "" {
-			targetUrl = _proxyPrefix + "/"
-		}
-		urlString := fmt.Sprintf("%s%s?%s", targetUrl, signedUrl.Path, signedUrl.RawQuery)
+		urlString := fmt.Sprintf("%s%s?%s", _proxyPrefix, signedUrl.Path, signedUrl.RawQuery)
 		urls[key] = gin.H{"url": urlString, "expireAt": time.Now().Add(duration)}
 	}
 
