@@ -1,8 +1,9 @@
 package util
 
 import (
+	"fmt"
+	"github.com/araddon/dateparse"
 	"github.com/gin-gonic/gin"
-	"github.com/jinzhu/now"
 	"golang.org/x/exp/slices"
 	"strconv"
 	"time"
@@ -68,17 +69,12 @@ func DefaultQueryInt64(c *gin.Context, key string) *int64 {
 	}
 }
 
-func DefaultDate(c *gin.Context, key string) *time.Time {
+func DefaultDate(c *gin.Context, key string) (time.Time, error) {
 	input := c.DefaultQuery(key, "")
 	if input == "" {
-		return nil
+		return time.Time{}, fmt.Errorf("没有日期参数: %s", key)
 	}
 	loc, _ := time.LoadLocation("Asia/Shanghai")
-	input = input + " 00:00:00"
 
-	if v, err := now.ParseInLocation(loc, input); err != nil {
-		return nil
-	} else {
-		return &v
-	}
+	return dateparse.ParseIn(input, loc)
 }
