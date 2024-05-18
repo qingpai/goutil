@@ -5,7 +5,8 @@ if [[ $# -eq 0 ]] ; then
     exit 1
 fi
 
-git push
+git push origin
+git push github
 git tag -d $1
 git push -d origin $1
 git tag $1
