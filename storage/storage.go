@@ -1,11 +1,11 @@
 package storage
 
 import (
-	"code.qingpai365.com/erp/goutil/log"
-	"code.qingpai365.com/erp/goutil/util"
 	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/qingpai/goutil/log"
+	"github.com/qingpai/goutil/util"
 	"mime/multipart"
 	"net/url"
 	"strings"

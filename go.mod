@@ -1,4 +1,4 @@
-module code.qingpai365.com/erp/goutil
+module github.com/qingpai/goutil
 
 go 1.22.2
 

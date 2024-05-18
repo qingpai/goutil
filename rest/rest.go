@@ -1,9 +1,9 @@
 package rest
 
 import (
-	"code.qingpai365.com/erp/goutil/log"
 	"errors"
 	"github.com/go-resty/resty/v2"
+	"github.com/qingpai/goutil/log"
 	"time"
 )
 

@@ -1,8 +1,8 @@
 package util
 
 import (
-	"code.qingpai365.com/erp/goutil/validator"
 	"fmt"
+	"github.com/qingpai/goutil/validator"
 	"net/http"
 	"reflect"
 	"strings"

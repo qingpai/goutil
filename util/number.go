@@ -1,7 +1,7 @@
 package util
 
 import (
-	"code.qingpai365.com/erp/goutil/localtime"
+	"github.com/qingpai/goutil/localtime"
 	"golang.org/x/exp/constraints"
 	"time"
 )

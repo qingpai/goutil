@@ -1,10 +1,10 @@
 package mobnotifice
 
 import (
-	"code.qingpai365.com/erp/goutil/log"
-	"code.qingpai365.com/erp/goutil/rest"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/qingpai/goutil/log"
+	"github.com/qingpai/goutil/rest"
 	"net/http"
 	"time"
 )
