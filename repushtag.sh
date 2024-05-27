@@ -6,8 +6,10 @@ if [[ $# -eq 0 ]] ; then
 fi
 
 git push origin
-git push github
-git tag -d $1
-git push -d origin $1
 git tag $1
 git push origin $1
+
+export ALL_PROXY=socks5://192.168.0.11:7448
+git push github
+git push github $1
+unset ALL_PROXY
