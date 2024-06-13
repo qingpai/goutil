@@ -107,3 +107,12 @@ func Isalphanumeric(input string) bool {
 
 	return reg.MatchString(input)
 }
+
+func TrimPrefixArray(input string, prefix []string) string {
+	result := input
+	for _, p := range prefix {
+		result = strings.TrimPrefix(result, p)
+	}
+
+	return result
+}
