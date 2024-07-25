@@ -9,6 +9,15 @@ import (
 	"time"
 )
 
+// GetClientIp 获取客户端IP
+func GetClientIp(c *gin.Context) string {
+	reqIP := c.Request.Header.Get("X-Forwarded-For")
+	if reqIP == "::1" {
+		reqIP = "127.0.0.1"
+	}
+	return reqIP
+}
+
 func ShouldBindJSONWithFields(c *gin.Context, fields []string) (map[string]any, error) {
 	result := map[string]interface{}{}
 

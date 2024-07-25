@@ -28,10 +28,6 @@ func IsNil(i interface{}) bool {
 	return i == nil || reflect.ValueOf(i).IsNil()
 }
 
-func GetClientIp(c *gin.Context) string {
-	return c.ClientIP()
-}
-
 func CurrentDateTimeString() string {
 	t := time.Now()
 	return t.Format("20060102150405")
