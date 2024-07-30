@@ -40,6 +40,7 @@ type Provider interface {
 	PutObject(key string, fileHeader *multipart.FileHeader) (*UploadInfo, error)
 	GetObject(key string) ([]byte, error)
 	SignUrl(key string, duration time.Duration) (*url.URL, error)
+	RemoveObject(key string) error
 }
 
 type UploadInfo struct {

@@ -104,6 +104,24 @@ func (m *Minio) PutObject(key string, fileHeader *multipart.FileHeader) (*Upload
 	return uploadInfo, nil
 }
 
+func (m *Minio) RemoveObject(key string) error {
+	client, err := minio.New(m.Endpoint, &minio.Options{
+		Creds:  credentials.NewStaticV4(m.AccessKeyId, m.AccessKeySecret, ""),
+		Secure: false,
+	})
+	if err != nil {
+		return err
+	}
+
+	ctx := context.Background()
+
+	if err = client.RemoveObject(ctx, m.BucketName, key, minio.RemoveObjectOptions{}); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func ExtToContentType(ext string) string {
 	switch ext {
 	case ".html":

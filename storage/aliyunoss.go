@@ -90,3 +90,21 @@ func (m *AliyunOss) PutObject(key string, fileHeader *multipart.FileHeader) (*Up
 
 	return uploadInfo, nil
 }
+
+func (m *AliyunOss) RemoveObject(key string) error {
+	client, err := oss.New(m.Endpoint, m.AccessKeyId, m.AccessKeySecret)
+	if err != nil {
+		return err
+	}
+
+	bucket, err := client.Bucket(m.BucketName)
+	if err != nil {
+		return err
+	}
+
+	if err = bucket.DeleteObject(key); err != nil {
+		return err
+	}
+
+	return nil
+}
