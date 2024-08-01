@@ -1,6 +1,7 @@
 package datetime
 
 import (
+	"database/sql/driver"
 	"fmt"
 	"time"
 )
@@ -109,6 +110,24 @@ func (d *Date) UnmarshalText(data []byte) error {
 	return err
 }
 
+// Value 写入 mysql 时调用
+func (t Date) Value() (driver.Value, error) {
+	// 0001-01-01 00:00:00 属于空值，遇到空值解析成 null 即可
+	if t.String() == "0001-01-01" {
+		return nil, nil
+	}
+	return []byte(t.String()), nil
+}
+
+// Scan 检出 mysql 时调用
+func (t *Date) Scan(v interface{}) error {
+	var err error
+	if *t, err = ParseDate(v.(string)); err != nil {
+		return err
+	}
+	return nil
+}
+
 // A Time represents a time with nanosecond precision.
 //
 // This type does not include location information, and therefore does not
@@ -190,6 +209,20 @@ func (t *Time) UnmarshalText(data []byte) error {
 	var err error
 	*t, err = ParseTime(string(data))
 	return err
+}
+
+// Value 写入 mysql 时调用
+func (t Time) Value() (driver.Value, error) {
+	return []byte(t.String()), nil
+}
+
+// Scan 检出 mysql 时调用
+func (t *Time) Scan(v interface{}) error {
+	var err error
+	if *t, err = ParseTime(v.(string)); err != nil {
+		return err
+	}
+	return nil
 }
 
 // A DateTime represents a date and time.
@@ -288,4 +321,22 @@ func (dt *DateTime) UnmarshalText(data []byte) error {
 	var err error
 	*dt, err = ParseDateTime(string(data))
 	return err
+}
+
+// Value 写入 mysql 时调用
+func (t DateTime) Value() (driver.Value, error) {
+	// 0001-01-01 00:00:00 属于空值，遇到空值解析成 null 即可
+	if t.String() == "0001-01-01 00:00:00" {
+		return nil, nil
+	}
+	return []byte(t.String()), nil
+}
+
+// Scan 检出 mysql 时调用
+func (t *DateTime) Scan(v interface{}) error {
+	var err error
+	if *t, err = ParseDateTime(v.(string)); err != nil {
+		return err
+	}
+	return nil
 }
