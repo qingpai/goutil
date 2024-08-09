@@ -122,7 +122,13 @@ func (t Date) Value() (driver.Value, error) {
 // Scan 检出 mysql 时调用
 func (t *Date) Scan(v interface{}) error {
 	var err error
-	if *t, err = ParseDate(v.(string)); err != nil {
+	//convert v to []uint8
+	vv := v.([]uint8)
+	if vv == nil || len(vv) == 0 {
+		t = nil
+		return nil
+	}
+	if *t, err = ParseDate(b2s(vv)); err != nil {
 		return err
 	}
 	return nil
@@ -219,7 +225,13 @@ func (t Time) Value() (driver.Value, error) {
 // Scan 检出 mysql 时调用
 func (t *Time) Scan(v interface{}) error {
 	var err error
-	if *t, err = ParseTime(v.(string)); err != nil {
+	//convert v to []uint8
+	vv := v.([]uint8)
+	if vv == nil || len(vv) == 0 {
+		t = nil
+		return nil
+	}
+	if *t, err = ParseTime(b2s(vv)); err != nil {
 		return err
 	}
 	return nil
@@ -339,4 +351,12 @@ func (t *DateTime) Scan(v interface{}) error {
 		return err
 	}
 	return nil
+}
+
+func b2s(bs []uint8) string {
+	ba := []byte{}
+	for _, b := range bs {
+		ba = append(ba, byte(b))
+	}
+	return string(ba)
 }
