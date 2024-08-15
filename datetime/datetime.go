@@ -203,6 +203,28 @@ func (t Time) After(t2 Time) bool {
 	return t2.Before(t)
 }
 
+func (t Time) AddHour(n int) Time {
+	return Time{Hour: t.Hour + n, Minute: t.Minute}
+}
+
+func (t Time) AddMinute(n int) Time {
+	tm := time.Date(2, 2, 2, t.Hour, t.Minute, 0, 0, time.UTC)
+	return TimeOf(tm.Add(time.Duration(n) * time.Minute))
+}
+
+func (t Time) CountHalfHour(t2 Time) int {
+	if t2.Before(t) {
+		return 0
+	}
+
+	count := 0
+	for start := t; start.Before(t2); start = start.AddMinute(30) {
+		count++
+	}
+
+	return count
+}
+
 // MarshalText implements the encoding.TextMarshaler interface.
 // The output is the result of t.String().
 func (t Time) MarshalText() ([]byte, error) {
