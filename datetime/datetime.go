@@ -209,6 +209,13 @@ func (t Time) After(t2 Time) bool {
 	return t2.Before(t)
 }
 
+func (t Time) AfterOrEqual(t2 Time) bool {
+	if t.Hour == t2.Hour && t.Minute == t2.Minute {
+		return true
+	}
+	return t2.Before(t)
+}
+
 func (t Time) AddHour(n int) Time {
 	return Time{Hour: t.Hour + n, Minute: t.Minute}
 }
